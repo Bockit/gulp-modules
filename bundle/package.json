@@ -1,6 +1,6 @@
 {
-  "name": "@smallmultiples/bundle",
-  "version": "1.2.0",
+  "name": "@bockit/bundle",
+  "version": "2.0.1",
   "description": "Bundle javascript with browserify, designed to be reused in various ways in gulp task",
   "main": "index.js",
   "scripts": {
@@ -8,18 +8,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:smallmultiples/gulp-modules.git"
+    "url": "git@github.com:bockit/gulp-modules.git"
   },
-  "homepage": "http://smallmultiples.github.io/gulp-modules/bundle",
+  "homepage": "http://bockit.github.io/gulp-modules/bundle",
   "keywords": [
     "browserify",
-    "gulp",
-    "smallmultiples"
+    "gulp"
   ],
   "author": {
-    "name": "Small Multiples",
-    "email": "info@small.mu",
-    "website": "http://small.mu"
+    "name": "James Hiscock",
+    "email": "npm@jameshiscock.com",
+    "website": "http://jameshiscock.com"
   },
   "contributors": [
     {
@@ -38,7 +37,7 @@
     "url": "https://github.com/smallmultiples/gulp-modules/issues"
   },
   "dependencies": {
-    "browserify": "^11.0.0",
+    "browserify": "^13.0.0",
     "gulp": "^3.9.0",
     "gulp-duration": "0.0.0",
     "gulp-streamify": "0.0.5",
@@ -47,6 +46,6 @@
     "lodash.merge": "^3.3.2",
     "node-notifier": "^4.2.3",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.3.0"
+    "watchify": "^3.7.0"
   }
 }
