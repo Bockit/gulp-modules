@@ -15,16 +15,16 @@ var DEFAULTS = {
     start: gutil.colors.green('Bundling JavaScript...')
   , time: 'Bundled JavaScript'
   , error: function () {}
-  , transforms: []
-  , extensions: []
-  , excludes: []
-  , onUpdate: function () {}
-  , standalone: null
-  , filename: 'app.js'
   , buildNotifications: false
   , notificationText: 'Build is ready'
   , notificationTitle: 'BUILD'
+  , onUpdate: function () {}
+  , browserifyOpts: {}
+  , transforms: []
+  , excludes: []
+  , ignores: []
   , plugins: []
+  , filename: 'app.js'
   , uglify: {
         mangle: true
       , output: { quote_keys: true }
@@ -39,21 +39,17 @@ function bundleFactory (options) {
 
     function getBundler (entry, dest, params) {
         if (bundler) return bundler
-        var opts = {
-            extensions: options.extensions
-          , debug: params.debug
-        }
-        if (options.standalone) {
-            opts.standalone = options.standalone
-        }
+
         if (params.once) {
-            bundler = browserify(opts)
+            bundler = browserify(options.browserifyOptions)
         }
         else {
-            opts = merge(opts, watchify.args)
+            var opts = merge(options.browserifyOptions, watchify.args)
             bundler = watchify(browserify(opts))
-            bundler.on('update', function () {
-                bundle(entry, dest, params, options.onUpdate)
+            bundler.on('update', function (updated) {
+                bundle(entry, dest, params, function() {
+                  options.onUpdate(updated)
+                })
             })
         }
 
@@ -70,6 +66,10 @@ function bundleFactory (options) {
             bundler.exclude(exclude)
         })
 
+        options.ignores.forEach(function (ignore) {
+            bundler.ignore(ignore)
+        })
+
         return bundler
     }
 
@@ -78,8 +78,8 @@ function bundleFactory (options) {
         cb = cb || function () {}
         gutil.log(options.start)
 
-        var debug = params.debug
         var minify = params.minify
+
         var stream = getBundler(entry, dest, params)
             .bundle()
             .on('error', options.error)
@@ -93,7 +93,9 @@ function bundleFactory (options) {
                 })
             })
 
-        if (minify) stream = stream.pipe(streamify(uglify(options.uglify)))
+        if (params.minify) {
+          stream = stream.pipe(streamify(uglify(options.uglify)))
+        }
 
         return stream.pipe(gulp.dest(dest))
             .on('end', cb)
