@@ -1,6 +1,6 @@
 {
   "name": "@bockit/bundle",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "description": "Bundle javascript with browserify, designed to be reused in various ways in gulp task",
   "main": "index.js",
   "scripts": {
